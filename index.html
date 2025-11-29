@@ -926,7 +926,7 @@
       const tiltY = x * 3;
 
       panelWrap.style.transform =
-        `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        `translate3d(${x * 10}px, ${y * 6}px, 0) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
       geo.style.transform = `translate3d(${x * -16}px, ${y * -10}px, 0)`;
     }
 
