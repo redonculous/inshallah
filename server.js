@@ -1,30 +1,26 @@
-const express = require('express');
-const app = express();
-const path = require('path');
+const DISCORD_ID = "879668154236821514";
 
+async function loadStatus() {
+  try {
+    const res = await fetch(
+      `https://api.lanyard.rest/v1/users/${DISCORD_ID}`
+    );
 
-const PORT = 3000;
+    const json = await res.json();
+    const data = json.data;
 
-const DISCORD_ID = '879668154236821514'; 
+    // Example: update elements on the page
+    const usernameEl = document.getElementById("discord-username");
+    const statusEl   = document.getElementById("discord-status");
 
+    if (usernameEl) usernameEl.textContent = data.discord_user.username;
+    if (statusEl)   statusEl.textContent   = data.discord_status;
 
-app.use(express.static('public'));
+    // You can also log it to see structure
+    console.log("Lanyard data:", data);
+  } catch (err) {
+    console.error("Failed to load Lanyard status:", err);
+  }
+}
 
-
-app.get('/api/lanyard', async (req, res) => {
-    try {
-        const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-        const data = await response.json();
-        
-
-        res.json(data);
-    } catch (error) {
-        console.error("Lanyard Error:", error);
-        res.status(500).json({ success: false, error: "Failed to fetch status" });
-    }
-});
-
-
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+loadStatus();
