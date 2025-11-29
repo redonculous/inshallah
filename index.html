@@ -31,7 +31,6 @@
       --accent-3: #4ade80;
       --radius: 24px;
       --radius-pill: 999px;
-
       --transition-fast: 0.16s ease;
       --transition-med: 0.32s ease;
     }
@@ -917,25 +916,58 @@
     const panelWrap = document.querySelector(".panel-wrap");
     const geo = document.querySelector(".geo");
 
+    function applyParallax(xNorm, yNorm) {
+      if (!panelWrap || !geo) return;
+      const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+      const x = clamp(xNorm, -1, 1);
+      const y = clamp(yNorm, -1, 1);
+      const tiltX = y * -3;
+      const tiltY = x * 3;
+      const tx = x * 10;
+      const ty = y * 6;
+      panelWrap.style.transform =
+        `translate3d(${tx}px, ${ty}px, 0) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      geo.style.transform = `translate3d(${x * -16}px, ${y * -10}px, 0)`;
+    }
+
     function handleMove(e) {
       if (window.innerWidth < 640) return;
       const x = (e.clientX / window.innerWidth - 0.5) * 2;
       const y = (e.clientY / window.innerHeight - 0.5) * 2;
-
-      const tiltX = y * -3;
-      const tiltY = x * 3;
-
-      panelWrap.style.transform =
-        `translate3d(${x * 10}px, ${y * 6}px, 0) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-      geo.style.transform = `translate3d(${x * -16}px, ${y * -10}px, 0)`;
+      applyParallax(x, y);
     }
 
     window.addEventListener("mousemove", handleMove);
+
+    function enableGyroParallax() {
+      if (!window.DeviceOrientationEvent) return;
+      const useGyro = window.innerWidth < 640 || "ontouchstart" in window;
+      if (!useGyro) return;
+
+      function handleOrientation(e) {
+        const beta = e.beta || 0;
+        const gamma = e.gamma || 0;
+        const x = gamma / 45;
+        const y = beta / 45;
+        applyParallax(x, y);
+      }
+
+      if (typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission().then((res) => {
+          if (res === "granted") {
+            window.addEventListener("deviceorientation", handleOrientation);
+          }
+        }).catch(() => {});
+      } else {
+        window.addEventListener("deviceorientation", handleOrientation);
+      }
+    }
 
     window.addEventListener("DOMContentLoaded", () => {
       requestAnimationFrame(() => {
         body.classList.add("ready");
       });
+      enableGyroParallax();
     });
 
     const modal = document.getElementById("imgModal");
