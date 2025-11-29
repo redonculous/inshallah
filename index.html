@@ -845,7 +845,7 @@
 
   <!-- corner button opens image -->
   <button class="corner-button" aria-label="open image">
-    
+   <!-- you can put an icon or emoji here if you want -->
   </button>
 
   <div class="img-modal" id="imgModal">
@@ -989,7 +989,9 @@
       });
     }
 
-    // ---- discord status + profile via backend (/api/lanyard) ----
+    // ---- discord status + profile via Lanyard (direct, no Node) ----
+
+    const DISCORD_ID = "879668154236821514";
 
     const statusRow = document.querySelector(".status-row");
     const statusText = document.querySelector(".status-text");
@@ -1059,8 +1061,8 @@
       }
 
       try {
-        // node backend: /api/lanyard → lanyard
-        const res = await fetch("/api/lanyard");
+        // directly call Lanyard from the browser
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
         const json = await res.json();
 
         if (!json || !json.data || json.success === false) {
@@ -1134,14 +1136,6 @@
 
     updateStatus();
     setInterval(updateStatus, 15000);
-
-
-    
   </script>
 </body>
 </html>
-<span id="discord-username"></span>
-<span id="discord-status"></span>
-
-<script src="script.js"></script>
-

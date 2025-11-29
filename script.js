@@ -9,14 +9,17 @@ async function loadStatus() {
     const json = await res.json();
     const data = json.data;
 
-    // Example: update elements on the page
+    if (!data || !data.discord_user) {
+      console.error("No data from Lanyard:", json);
+      return;
+    }
+
     const usernameEl = document.getElementById("discord-username");
     const statusEl   = document.getElementById("discord-status");
 
     if (usernameEl) usernameEl.textContent = data.discord_user.username;
     if (statusEl)   statusEl.textContent   = data.discord_status;
 
-    // You can also log it to see structure
     console.log("Lanyard data:", data);
   } catch (err) {
     console.error("Failed to load Lanyard status:", err);
