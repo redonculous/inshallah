@@ -6,7 +6,6 @@
   <title>your name</title>
 
   <style>
-    /* extra safety: status bar can never show caret or be “typed” */
     .status-row,
     .status-row * {
       -webkit-user-select: none !important;
@@ -16,7 +15,6 @@
       caret-color: transparent !important;
     }
 
-    /* don’t let clicks land directly on the text */
     .status-text {
       pointer-events: none;
     }
@@ -43,8 +41,6 @@
       padding: 0;
       box-sizing: border-box;
       text-transform: lowercase !important;
-
-      /* kill text selection + caret globally */
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -70,7 +66,6 @@
         color 0.4s ease;
     }
 
-    /* theme: dark */
     body.theme-dark {
       --bg: radial-gradient(circle at top, #020617, #020617 60%, #000 100%);
       --text: #f9fafb;
@@ -80,7 +75,6 @@
       --shape-border: rgba(255, 255, 255, 0.12);
     }
 
-    /* theme: light */
     body.theme-light {
       --bg: radial-gradient(circle at top, #e5e7eb, #d4d4d8 70%, #e5e7eb 100%);
       --text: #020617;
@@ -90,7 +84,6 @@
       --shape-border: rgba(15, 23, 42, 0.10);
     }
 
-    /* cinematic vignette */
     .vignette {
       position: fixed;
       inset: 0;
@@ -105,8 +98,6 @@
     body.theme-light .vignette {
       opacity: 0.25;
     }
-
-    /* ---------- 3d shapes (cinematic depth) ---------- */
 
     .geo {
       position: fixed;
@@ -188,8 +179,6 @@
       100% { transform: translate3d(240px,-240px,-40px) rotateX(60deg) rotateY(52deg); }
     }
 
-    /* ---------- subtle tap ripple ---------- */
-
     .ripple {
       position: fixed;
       width: 10px;
@@ -211,8 +200,6 @@
         opacity: 0;
       }
     }
-
-    /* ---------- mobile-first panel ---------- */
 
     .panel-wrap {
       position: relative;
@@ -305,8 +292,6 @@
       100% { background-position: 200% 50%; }
     }
 
-    /* ---------- content ---------- */
-
     .top-row {
       display: flex;
       justify-content: space-between;
@@ -323,7 +308,6 @@
       min-width: 0;
     }
 
-    /* discord-style avatar */
     .avatar {
       position: relative;
       width: 42px;
@@ -388,8 +372,6 @@
       text-overflow: ellipsis;
     }
 
-    /* ---- status row with spinner + flip ---- */
-
     .status-row {
       display: inline-flex;
       align-items: center;
@@ -414,12 +396,10 @@
       height: 14px;
       border-radius: 999px;
       flex-shrink: 0;
-
       border: 2px solid transparent;
       border-top-color: #a5b4fc;
       border-right-color: #a5b4fc;
       background: transparent;
-
       box-shadow: 0 0 10px rgba(129, 140, 248, 0.8);
       animation: spinWheel 0.85s linear infinite;
     }
@@ -504,8 +484,6 @@
         opacity: 1;
       }
     }
-
-    /* ---------- iOS-style theme toggle ---------- */
 
     .theme-toggle {
       position: relative;
@@ -700,8 +678,6 @@
       opacity: 0.85;
     }
 
-    /* ---------- corner image button + modal ---------- */
-
     .corner-button {
       position: fixed;
       bottom: 20px;
@@ -709,19 +685,15 @@
       width: 46px;
       height: 46px;
       border-radius: 16px;
-
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(22px) saturate(150%);
       -webkit-backdrop-filter: blur(22px) saturate(150%);
-
       border: 1px solid rgba(255, 255, 255, 0.18);
       color: var(--text);
       font-size: 1.05rem;
-
       display: flex;
       justify-content: center;
       align-items: center;
-
       cursor: pointer;
       z-index: 30;
       transition:
@@ -729,7 +701,6 @@
         box-shadow 0.18s ease,
         background 0.18s ease,
         border-color 0.18s ease;
-
       box-shadow:
         0 6px 22px rgba(0, 0, 0, 0.45),
         inset 0 0 0 0.4px rgba(255, 255, 255, 0.22);
@@ -836,24 +807,19 @@
 <body class="theme-dark">
   <div class="vignette"></div>
 
-  <!-- cinematic 3d background -->
   <div class="geo">
     <div class="shape shape--circle"></div>
     <div class="shape shape--square"></div>
     <div class="shape shape--tri"></div>
   </div>
 
-  <!-- corner button opens image -->
-  <button class="corner-button" aria-label="open image">
-   <!-- you can put an icon or emoji here if you want -->
-  </button>
+  <button class="corner-button" aria-label="open image"></button>
 
   <div class="img-modal" id="imgModal">
     <div class="img-modal-backdrop"></div>
     <img src="preview.png" alt="preview" class="img-modal-content" />
   </div>
 
-  <!-- main mobile-first panel -->
   <div class="panel-wrap">
     <section class="panel" aria-label="personal link hub">
       <div class="top-row">
@@ -869,7 +835,6 @@
             <div class="name">your discord name</div>
             <div class="handle">@yourdiscord</div>
 
-            <!-- status pill -->
             <div class="status-row loading">
               <span class="status-dot"></span>
               <span class="status-text">syncing…</span>
@@ -961,7 +926,7 @@
       const tiltY = x * 3;
 
       panelWrap.style.transform =
-        `translate3d(${x * 10}px, ${y * 6}px, 0) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
       geo.style.transform = `translate3d(${x * -16}px, ${y * -10}px, 0)`;
     }
 
@@ -988,8 +953,6 @@
         modal.classList.remove("active");
       });
     }
-
-    // ---- discord status + profile via Lanyard (direct, no Node) ----
 
     const DISCORD_ID = "879668154236821514";
 
@@ -1061,7 +1024,6 @@
       }
 
       try {
-        // directly call Lanyard from the browser
         const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
         const json = await res.json();
 
@@ -1073,7 +1035,6 @@
         const data = json.data;
         const user = data.discord_user;
 
-        // --- update avatar + name + handle from lanyard ---
         if (user) {
           if (avatarImg) {
             let avatarUrl = "";
@@ -1083,7 +1044,6 @@
               const ext = isGif ? "gif" : "webp";
               avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=128`;
             } else {
-              // default placeholder avatar
               const base = Number(user.id) || 0;
               const idx = base % 5;
               avatarUrl = `https://cdn.discordapp.com/embed/avatars/${idx}.png`;
@@ -1107,7 +1067,6 @@
               : "@unknown";
           }
 
-          // optional: set page title
           const titleName =
             user.global_name ||
             user.display_name ||
@@ -1116,8 +1075,7 @@
           document.title = titleName;
         }
 
-        // --- update presence pill ---
-        const discordStatus = data.discord_status; // "online" | "idle" | "dnd" | "offline"
+        const discordStatus = data.discord_status;
         const prettyMap = {
           online: "online",
           idle: "idle",
